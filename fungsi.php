@@ -28,8 +28,28 @@ function validasi_jumlah_huruf($variabel) {
     return preg_match($regex, $variabel) === 0;
 } 
 
-// validasi alamat
+// validasi password
+function pass($error, $password) {
+    $regex = "/^[0-9A-Za-z!@#$%^&*()_+]{8,}$/";
 
+    if (is_required($password)) {
+        $error["password"] = "Password tidak boleh kosong";
+    } else if (!preg_match($regex, $password)) {
+        $error["password"] = "Password harus terdiri dari minimal 8 karakter dan mengandung huruf, angka, serta simbol";
+    }
+     
+}
+
+// validasi tanggal
+function tanggal($error, $tanggal) {
+    $regex = "/^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[0-2])[- /.](19|20)\d\d$/";
+
+    if (is_required($tanggal)) {
+        $error["tanggal"] = "Tanggal tidak boleh kosong";
+    } else if (!preg_match($regex, $tanggal)) {
+        $error["tanggal"] = "Format tanggal tidak valid";
+    }
+}
 
 
 ?>
