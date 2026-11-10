@@ -18,7 +18,7 @@
         
         <button type="submit">Submit</button>
     </form>
-    <a href="index.php">index</a?
+    <a href="index.php">index</a>
 
 
 </body>
