@@ -3,10 +3,26 @@
 
     session_start();
 
+    require "fungsi.php";
     include "koneksi.php";
 
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+    if ($_SERVER["REQUEST_METHOD"] !== "POST") {
+        header("Location: login.php");
+        exit;
+    }
+
+    $error = [];
+    $username = trim($_POST['username'] ?? "");
+    $password = $_POST['password'] ?? "";
+
+    $error = login($error, $username, $password);
+
+    if (!empty($error)) {
+    $_SESSION["error"]    = $error;
+    $_SESSION["username"] = $username;
+    header("Location: login.php");
+    exit;
+}
 
     $query = mysqli_prepare($koneksi,
         "SELECT * FROM user WHERE username = ?");

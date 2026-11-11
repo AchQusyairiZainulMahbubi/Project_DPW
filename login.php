@@ -1,3 +1,11 @@
+<?php
+session_start();
+$error    = $_SESSION["error"] ?? [];
+$username = $_SESSION["username"] ?? "";
+unset($_SESSION["error"], $_SESSION["username"]);
+?>
+
+
 
 <!DOCTYPE html>
 <html>
@@ -12,12 +20,22 @@
     <form action="proses_login.php" method="POST">
 
         <label>Username</label><br>
-        <input type="text" name="username">
+        <input type="text" id="username" name="username" value="<?php echo($username) ?>">
+        <?php if (isset($error["username"])): ?>
+            <span class="error"><?= $error["username"] ?></span>
+        <?php endif; ?>
         <br><br>
 
         <label>Password</label><br>
-        <input type="password" name="password">
+        <input type="password" id="password" name="password">
+        <?php if (isset($error["password"])): ?>
+            <span class="error"><?= $error["password"] ?></span>
+        <?php endif; ?>
         <br><br>
+
+        <?php if (isset($error["login"])): ?>
+        <p class="error"><?= htmlspecialchars($error["login"]) ?></p>
+        <?php endif; ?>
 
         <button type="submit" name="login">Login</button>
 

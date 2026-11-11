@@ -36,3 +36,8 @@ a {
     text-decoration: none;
     margin-right: 10px;
 }
+
+.error {
+    color: red;
+    font-size: 12px;
+}
