@@ -1,38 +1,42 @@
-<?php
-require "fungsi.php";
-
-$error = [];
-if($_SERVER['REQUEST_METHOD']=== "POST"){
-	$nama = $_POST['no'];
-	$pass = $_POST['password'];
-	$nim = $_POST['username'];
-
-	validasi_nama($error, $nama);
-}
-?>
-
-
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Register</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <h1>DAFTAR DULU</h1><p></p>
-    <form action="register.php" method="post" >
-        <label for="username">masukan nama</label>
-        <input type="text" name="username"><span style="color: red;"><?php echo $error['nama']??"" ?></span>
-        <p></p>
-        <label for="password">masukan password</label>
-        <input type="text" name="password">
-        <br>
-        <label for="no" >masukan no hp</label>
-        <input type="text" name="no">
+
+    <h2>Registrasi Akun</h2>
+
+    <form action="proses_register.php" method="POST">
+
+        <label>Username</label><br>
+        <input type="text" name="username">
         <br><br>
-        <button type="register" name="register">register</button>
+
+        <label>Email</label><br>
+        <input type="text" name="email">
+        <br><br>
+
+        <label>Password</label><br>
+        <input type="password" name="password">
+        <br><br>
+
+        <label>Daftar Sebagai</label><br>
+
+        <select name="role">
+            <option value="client">Client</option>
+            <option value="expert">Expert</option>
+        </select>
+
+        <br><br>
+
+        <button type="submit" name="register">Register</button>
+
     </form>
+
+    <p>Sudah punya akun? <a href="login.php">Login</a></p>
+
 </body>
 </html>
