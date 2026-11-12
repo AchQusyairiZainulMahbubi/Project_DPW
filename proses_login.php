@@ -3,51 +3,47 @@
 
     session_start();
 
-    require "fungsi.php";
     include "koneksi.php";
+    include "fungsi.php";
 
-    if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-        header("Location: login.php");
-        exit;
-    }
+    $username = $_POST["username"];
+    $password = $_POST["password"];
 
-    $error = [];
-    $username = trim($_POST['username'] ?? "");
-    $password = $_POST['password'] ?? "";
-
-    $error = login($error, $username, $password);
+    $error = login($username, $password);
 
     if (!empty($error)) {
-    $_SESSION["error"]    = $error;
-    $_SESSION["username"] = $username;
-    header("Location: login.php");
-    exit;
-}
 
-    $query = mysqli_prepare($koneksi,
-        "SELECT * FROM user WHERE username = ?");
+        $_SESSION["error"] = implode(", ", $error);
+        $_SESSION["username"] = $username;
 
-    mysqli_stmt_bind_param($query, "s", $username);
+        header("Location: login.php");
+        exit;
 
-    mysqli_stmt_execute($query);
+    }
 
-    $result = mysqli_stmt_get_result($query);
+    // Mencari username di database
+    $query = mysqli_query($koneksi,
+        "SELECT * FROM user WHERE username = '$username'");
 
-    $data = mysqli_fetch_assoc($result);
+    $data = mysqli_fetch_assoc($query);
 
-    if ($data && password_verify($password, $data['passwors'])) {
+    // Memeriksa username dan password
+    if ($data && password_verify($password, $data["password"])) {
 
-        $_SESSION['id_User'] = $data['id_User'];
-        $_SESSION['username'] = $data['username'];
-        $_SESSION['role'] = $data['role'];
+        $_SESSION["id_User"] = $data["id_User"];
+        $_SESSION["username"] = $data["username"];
+        $_SESSION["role"] = $data["role"];
 
         header("Location: index.php");
         exit;
 
     } else {
 
-        echo "Username atau password salah!";
-        echo "<br><a href='login.php'>Kembali</a>";
+        $_SESSION["error"] = "Username atau password salah";
+        $_SESSION["username"] = $username;
+
+        header("Location: login.php");
+        exit;
 
     }
 

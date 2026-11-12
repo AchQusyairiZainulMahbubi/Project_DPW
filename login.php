@@ -1,49 +1,52 @@
+
 <?php
 session_start();
-$error    = $_SESSION["error"] ?? [];
+
+$error = $_SESSION["error"] ?? "";
 $username = $_SESSION["username"] ?? "";
-unset($_SESSION["error"], $_SESSION["username"]);
+
+unset($_SESSION["error"]);
+unset($_SESSION["username"]);
 ?>
 
-
-
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-    <h2>Login Akun</h2>
+    <header>
+        <h1>Login Akun</h1>
+    </header>
 
-    <form action="proses_login.php" method="POST">
+    <main>
+        <form action="proses_login.php" method="POST">
 
-        <label>Username</label><br>
-        <input type="text" id="username" name="username" value="<?php echo($username) ?>">
-        <?php if (isset($error["username"])): ?>
-            <span class="error"><?= $error["username"] ?></span>
-        <?php endif; ?>
-        <br><br>
+            <label>Username</label><br>
+            <input type="text" name="username"
+                   value="<?php echo htmlspecialchars($username); ?>">
+            <br><br>
 
-        <label>Password</label><br>
-        <input type="password" id="password" name="password">
-        <?php if (isset($error["password"])): ?>
-            <span class="error"><?= $error["password"] ?></span>
-        <?php endif; ?>
-        <br><br>
+            <label>Password</label><br>
+            <input type="password" name="password">
+            <br><br>
 
-        <?php if (isset($error["login"])): ?>
-        <p class="error"><?= htmlspecialchars($error["login"]) ?></p>
-        <?php endif; ?>
+            <?php if ($error != "") { ?>
+                <p class="error"><?php echo $error; ?></p>
+            <?php } ?>
 
-        <button type="submit" name="login">Login</button>
+            <button type="submit" name="login">Login</button>
 
-    </form>
+        </form>
 
-    <p>Belum punya akun? <a href="register.php">Register</a></p>
+        <p>Belum punya akun? <a href="register.php">Register</a></p>
 
-    <a href="index.php">Kembali ke Homepage</a>
+        <a href="index.php">Kembali ke Homepage</a>
+    </main>
 
 </body>
 </html>

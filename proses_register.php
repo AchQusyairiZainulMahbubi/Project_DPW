@@ -1,61 +1,77 @@
+
 <?php
-session_start();
-require "koneksi.php";
-require "fungsi.php";
 
-if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-    header("Location: register.php");
-    exit;
-}
+    session_start();
 
-$error    = [];
-$username = trim($_POST["username"] ?? "");
-$email    = trim($_POST["email"] ?? "");
-$password = $_POST["password"] ?? "";
-$role     = $_POST["role"] ?? "";
+    include "koneksi.php";
+    include "fungsi.php";
 
-// 1. Validasi memakai fungsi dari fungsi.php
-validasi_username($error, $username);
-validasi_email($error, $email);
-validasi_pass($error, $password);
-validasi_role($error, $role);
+    // Mengambil data dari form
+    $username = trim($_POST["username"] ?? "");
+    $email = trim($_POST["email"] ?? "");
+    $password = $_POST["password"] ?? "";
+    $role = $_POST["role"] ?? "";
 
-// 2. Cek duplikat (hanya kalau format sudah benar)
-if (empty($error)) {
-    $cek = mysqli_prepare($koneksi,
-        "SELECT username, email FROM user WHERE username = ? OR email = ?");
-    mysqli_stmt_bind_param($cek, "ss", $username, $email);
-    mysqli_stmt_execute($cek);
-    $hasil = mysqli_stmt_get_result($cek);
+    // Validasi data
+    $error = [];
 
-    while ($row = mysqli_fetch_assoc($hasil)) {
-        if ($row["username"] === $username) $error["username"] = "Username sudah dipakai";
-        if ($row["email"] === $email)       $error["email"]    = "Email sudah terdaftar";
+    validasi_username($error, $username);
+    validasi_email($error, $email);
+    validasi_pass($error, $password);
+    validasi_role($error, $role);
+
+    // Mengecek username dan email jika tidak ada error
+    if (empty($error)) {
+
+        $query = mysqli_query($koneksi,
+            "SELECT * FROM user WHERE username = '$username' OR email = '$email'");
+
+        while ($data = mysqli_fetch_assoc($query)) {
+
+            if ($data["username"] == $username) {
+                $error["username"] = "Username sudah dipakai";
+            }
+
+            if ($data["email"] == $email) {
+                $error["email"] = "Email sudah terdaftar";
+            }
+
+        }
+
     }
-}
 
-// 3. Ada error: kembali ke form
-if (!empty($error)) {
-    $_SESSION["error"] = $error;
-    $_SESSION["old"]   = ["username" => $username, "email" => $email, "role" => $role];
-    header("Location: register.php");
-    exit;
-}
+    // Jika terdapat error, kembali ke register
+    if (!empty($error)) {
 
-// 4. Simpan ke database
-$hash = password_hash($password, PASSWORD_DEFAULT);
+        $_SESSION["error"] = $error;
 
-$stmt = mysqli_prepare($koneksi,
-    "INSERT INTO user (username, email, password, role) VALUES (?, ?, ?, ?)");
-mysqli_stmt_bind_param($stmt, "ssss", $username, $email, $hash, $role);
+        $_SESSION["old"] = [
+            "username" => $username,
+            "email" => $email,
+            "role" => $role
+        ];
 
-if (mysqli_stmt_execute($stmt)) {
-    $_SESSION["sukses"] = "Registrasi berhasil, silakan login";
-    header("Location: login.php");
-    exit;
-}
+        header("Location: register.php");
+        exit;
 
-$_SESSION["error"] = ["username" => "Registrasi gagal, coba lagi"];
-$_SESSION["old"]   = ["username" => $username, "email" => $email, "role" => $role];
-header("Location: register.php");
-exit;
+    }
+
+    // Mengubah password menjadi hash
+    $password = password_hash($password, PASSWORD_DEFAULT);
+
+    // Menyimpan data ke database
+    $query = mysqli_query($koneksi,
+        "INSERT INTO user (username, email, password, role)
+        VALUES ('$username', '$email', '$password', '$role')");
+
+    // Jika registrasi berhasil
+    if ($query) {
+
+        $_SESSION["sukses"] = "Registrasi berhasil, silakan login";
+
+        header("Location: login.php");
+        exit;
+
+    }
+
+?>
