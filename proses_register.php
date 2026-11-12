@@ -15,10 +15,7 @@
     // Validasi data
     $error = [];
 
-    validasi_username($error, $username);
-    validasi_email($error, $email);
-    validasi_pass($error, $password);
-    validasi_role($error, $role);
+    $error = register($error, $username, $email, $password, $role);
 
     // Mengecek username dan email jika tidak ada error
     if (empty($error)) {
