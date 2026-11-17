@@ -61,5 +61,54 @@
 
         return $error;
     }
+   function validasi_profil($error, $username, $email, $password) {
+    $regex_us = "/^[a-zA-Z0-9_]+$/";
+    $regex_email = "/^[\w\.-]+@[\w\.-]+\.[a-zA-Z]{2,6}$/";
+    $regex_pass = "/^[0-9A-Za-z!@#$%^&*()_+]{8,}$/";
 
+    if (is_required($username)) {
+        $error["username"] = "Username tidak boleh kosong";
+    } else if (!preg_match($regex_us, $username)) {
+        $error["username"] = "Username hanya boleh berisi huruf, angka, dan underscore";
+    }
+
+    if (is_required($email)) {
+        $error["email"] = "Email tidak boleh kosong";
+    } else if (!preg_match($regex_email, $email)) {
+        $error["email"] = "Format email tidak valid";
+    }
+
+    // Password opsional saat edit: hanya divalidasi jika diisi
+    if (!is_required($password) && !preg_match($regex_pass, $password)) {
+        $error["password"] = "Password minimal 8 karakter";
+    }
+
+    return $error;
+}
+
+function select_id($id) {
+    global $koneksi;
+    $stmt = mysqli_prepare($koneksi, "SELECT * FROM user WHERE id_User = ?");
+    mysqli_stmt_bind_param($stmt, "i", $id);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    return mysqli_fetch_assoc($result);
+}
+
+function update_profil($id, $username, $email, $password) {
+    global $koneksi;
+
+    if ($password !== "") {
+        $hash = password_hash($password, PASSWORD_DEFAULT);
+        $stmt = mysqli_prepare($koneksi,
+            "UPDATE `user` SET username = ?, email = ?, passwors = ? WHERE id_User = ?");
+        mysqli_stmt_bind_param($stmt, "sssi", $username, $email, $hash, $id);
+    } else {
+        $stmt = mysqli_prepare($koneksi,
+            "UPDATE `user` SET username = ?, email = ? WHERE id_User = ?");
+        mysqli_stmt_bind_param($stmt, "ssi", $username, $email, $id);
+    }
+
+    return mysqli_stmt_execute($stmt);
+}
     ?>

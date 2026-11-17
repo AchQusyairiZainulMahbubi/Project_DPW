@@ -36,8 +36,10 @@
             <?php } else if ($_SESSION['role'] == 'expert') { ?>
 
                 <p>Anda login sebagai Expert.</p>
+                
 
             <?php } ?>
+            <p>Anda dapat Edit profil Anda <a href="profil.php">edit</a> </p>
 
             <a href="logout.php">Logout</a>
 
