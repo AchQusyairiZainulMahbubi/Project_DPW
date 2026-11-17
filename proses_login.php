@@ -46,7 +46,7 @@
         $_SESSION["username"] = $db_username;
         $_SESSION["role"] = $role;
 
-        header("Location: index.php");
+        header("Location: komentar.php");
         exit;
 
     } else {
