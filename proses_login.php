@@ -6,8 +6,8 @@
     include "koneksi.php";
     include "fungsi.php";
 
-    $username = $_POST["username"];
-    $password = $_POST["password"];
+    $username = trim($_POST["username"] ?? "");
+    $password = $_POST["password"] ?? "";
 
     $error = login($username, $password);
 
@@ -22,17 +22,29 @@
     }
 
     // Mencari username di database
-    $query = mysqli_query($koneksi,
-        "SELECT * FROM user WHERE username = '$username'");
+    $query = mysqli_prepare($koneksi,
+        "SELECT id_User, username, passwors, role FROM `user` WHERE username = ?");
 
-    $data = mysqli_fetch_assoc($query);
+    if (!$query) {
+        die("Terjadi kesalahan saat memproses login.");
+    }
+
+    mysqli_stmt_bind_param($query, "s", $username);
+
+    if (!mysqli_stmt_execute($query)) {
+        die("Terjadi kesalahan saat memproses login.");
+    }
+
+    mysqli_stmt_bind_result($query, $id_User, $db_username, $password_hash, $role);
+    $data_found = mysqli_stmt_fetch($query);
+    mysqli_stmt_close($query);
 
     // Memeriksa username dan password
-    if ($data && password_verify($password, $data["password"])) {
+    if ($data_found && password_verify($password, $password_hash)) {
 
-        $_SESSION["id_User"] = $data["id_User"];
-        $_SESSION["username"] = $data["username"];
-        $_SESSION["role"] = $data["role"];
+        $_SESSION["id_User"] = $id_User;
+        $_SESSION["username"] = $db_username;
+        $_SESSION["role"] = $role;
 
         header("Location: index.php");
         exit;
