@@ -1,10 +1,4 @@
 <?php
-    // ==================================================================
-    // expert/simpan_komentar.php
-    // Memproses form respon dari komentar.php:
-    // validasi -> simpan ke tabel comments -> kembali ke komentar.php
-    // ==================================================================
-
     session_start();
 
     include "../config/koneksi.php";

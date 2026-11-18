@@ -1,9 +1,4 @@
 <?php
-    // ==================================================================
-    // client/edit_topik.php
-    // Client mengedit topik diskusi yang ia buat sendiri
-    // ==================================================================
-
     session_start();
 
     include "../config/koneksi.php";

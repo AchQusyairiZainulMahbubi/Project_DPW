@@ -1,9 +1,4 @@
 <?php
-    // ==================================================================
-    // expert/topik_direspon.php
-    // Expert melihat (browse) topik yang sudah ia respon
-    // ==================================================================
-
     session_start();
 
     include "../config/koneksi.php";

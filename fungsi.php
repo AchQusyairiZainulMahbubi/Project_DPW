@@ -1,143 +1,15 @@
 <?php
-//         function is_required($variabel) {
-//             $variabel = trim($variabel);
-//             return empty($variabel);
-//         }
-
-//         // validasi tanggal
-//         function tanggal($error, $tanggal) {
-//             $regex = "/^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[0-2])[- /.](19|20)\d\d$/";
-
-//             if (is_required($tanggal)) {
-//                 $error["tanggal"] = "Tanggal tidak boleh kosong";
-//             } else if (!preg_match($regex, $tanggal)) {
-//                 $error["tanggal"] = "Format tanggal tidak valid";
-//             }
-//         }
-
-//         function login($username, $password) {
-
-//             $error = [];
-
-//             if (is_required($username)) {
-//                 $error["username"] = "Username tidak boleh kosong";
-//             }
-
-//             if (is_required($password)) {
-//                 $error["password"] = "Password tidak boleh kosong";
-//             }
-
-//             return $error;
-//         }
-
-//     function register($error, $username, $email, $password, $role) {
-//         $regex_us = "/^[a-zA-Z0-9_]+$/";
-//         $regex_email = "/^[\w\.-]+@[\w\.-]+\.[a-zA-Z]{2,6}$/";
-//         $regex_pass = "/^[0-9A-Za-z!@#$%^&*()_+]{8,}$/";
-
-//         if (is_required($username)) {
-//             $error["username"] = "Username tidak boleh kosong";
-//         } else if (!preg_match($regex_us, $username)) {
-//             $error["username"] = "Username hanya boleh berisi huruf, angka, dan underscore";
-//         }
-        
-//         if (is_required($email)) {
-//             $error["email"] = "Email tidak boleh kosong";
-//         } else if (!preg_match($regex_email, $email)) {
-//             $error["email"] = "Format email tidak valid";
-//         }
-
-//         if (is_required($password)) {
-//             $error["password"] = "Password tidak boleh kosong";
-//         } else if (!preg_match($regex_pass, $password)) {
-//             $error["password"] = "Password harus terdiri dari minimal 8 karakter dan mengandung huruf, angka, serta simbol";
-//         }
-
-//         if (is_required($role)) {
-//             $error["role"] = "Role tidak boleh kosong";
-//         } else if (!in_array($role, ["client", "expert"], true)) {
-//             $error["role"] = "Role tidak valid";
-//         }
-
-//         return $error;
-//     }
-//    function validasi_profil($error, $username, $email, $password) {
-//     $regex_us = "/^[a-zA-Z0-9_]+$/";
-//     $regex_email = "/^[\w\.-]+@[\w\.-]+\.[a-zA-Z]{2,6}$/";
-//     $regex_pass = "/^[0-9A-Za-z!@#$%^&*()_+]{8,}$/";
-
-//     if (is_required($username)) {
-//         $error["username"] = "Username tidak boleh kosong";
-//     } else if (!preg_match($regex_us, $username)) {
-//         $error["username"] = "Username hanya boleh berisi huruf, angka, dan underscore";
-//     }
-
-//     if (is_required($email)) {
-//         $error["email"] = "Email tidak boleh kosong";
-//     } else if (!preg_match($regex_email, $email)) {
-//         $error["email"] = "Format email tidak valid";
-//     }
-
-//     // Password opsional saat edit: hanya divalidasi jika diisi
-//     if (!is_required($password) && !preg_match($regex_pass, $password)) {
-//         $error["password"] = "Password minimal 8 karakter";
-//     }
-
-//     return $error;
-// }
-
-// function select_id($id) {
-//     global $koneksi;
-//     $stmt = mysqli_prepare($koneksi, "SELECT * FROM user WHERE id_User = ?");
-//     mysqli_stmt_bind_param($stmt, "i", $id);
-//     mysqli_stmt_execute($stmt);
-//     $result = mysqli_stmt_get_result($stmt);
-//     return mysqli_fetch_assoc($result);
-// }
-
-// function update_profil($id, $username, $email, $password) {
-//     global $koneksi;
-
-//     if ($password !== "") {
-//         $hash = password_hash($password, PASSWORD_DEFAULT);
-//         $stmt = mysqli_prepare($koneksi,
-//             "UPDATE `user` SET username = ?, email = ?, passwors = ? WHERE id_User = ?");
-//         mysqli_stmt_bind_param($stmt, "sssi", $username, $email, $hash, $id);
-//     } else {
-//         $stmt = mysqli_prepare($koneksi,
-//             "UPDATE `user` SET username = ?, email = ? WHERE id_User = ?");
-//         mysqli_stmt_bind_param($stmt, "ssi", $username, $email, $id);
-//     }
-
-//     return mysqli_stmt_execute($stmt);
-// }
-?>
-
-<?php
-    // ==================================================================
-    // fungsi.php
-    // Kumpulan fungsi validasi (server-side) dan fungsi query database
-    // ==================================================================
-
-
-    // ==================================================================
-    // BAGIAN 1 : FUNGSI VALIDASI
-    // ==================================================================
-
-    // Mengecek apakah masukan kosong (spasi saja juga dianggap kosong).
-    // Memakai pembanding "" supaya masukan "0" tidak dianggap kosong.
     function is_required($variabel) {
         $variabel = trim($variabel);
         return $variabel === "";
     }
 
-    // Mengecek panjang karakter (setelah trim) berada di antara $min dan $max
     function panjang_valid($teks, $min, $max) {
         $panjang = mb_strlen(trim($teks));
         return $panjang >= $min && $panjang <= $max;
     }
 
-    // Mengecek format password: minimal 8 karakter, wajib ada huruf, angka, dan simbol
+    // minimal 8 karakter, wajib ada huruf, angka, dan simbol
     function format_password_valid($password) {
         $regex_pass = '/^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[!@#$%^&*()_+])[0-9A-Za-z!@#$%^&*()_+]{8,}$/';
         return preg_match($regex_pass, $password) === 1;
@@ -153,19 +25,6 @@
         $nilai = $_POST[$nama] ?? "";
         return is_string($nilai) ? trim($nilai) : "";
     }
-
-    // Validasi tanggal (format dd-mm-yyyy)
-    // function tanggal($error, $tanggal) {
-    //     $regex = "/^(0[1-9]|[12][0-9]|3[01])[- \/.](0[1-9]|1[0-2])[- \/.](19|20)\d\d$/";
-
-    //     if (is_required($tanggal)) {
-    //         $error["tanggal"] = "Tanggal tidak boleh kosong";
-    //     } else if (!preg_match($regex, $tanggal)) {
-    //         $error["tanggal"] = "Format tanggal tidak valid";
-    //     }
-
-    //     return $error;
-    // }
 
     // Validasi form login
     function login($username, $password) {
@@ -285,12 +144,7 @@
 
         return $error;
     }
-
-
-    // ==================================================================
-    // BAGIAN 2 : FUNGSI DATABASE - USER
-    // ==================================================================
-
+    
     // Mengambil data satu user berdasarkan id
     function select_id($id) {
         global $koneksi;
@@ -328,11 +182,6 @@
 
         return mysqli_stmt_execute($stmt);
     }
-
-
-    // ==================================================================
-    // BAGIAN 3 : FUNGSI DATABASE - KATEGORI & TOPIK (POST)
-    // ==================================================================
 
     // Mengambil seluruh kategori
     function ambil_kategori() {
@@ -394,11 +243,6 @@
         return mysqli_stmt_execute($stmt);
     }
 
-    // Mengambil daftar topik sesuai mode:
-    //   "milik"    : topik yang dibuat oleh $id_user
-    //   "lain"     : topik yang dibuat oleh user selain $id_user
-    //   "direspon" : topik yang pernah direspon oleh $id_user (expert)
-    //   "semua"    : seluruh topik
     function daftar_topik($mode, $id_user) {
         global $koneksi;
 
@@ -429,12 +273,6 @@
         return mysqli_fetch_all($result, MYSQLI_ASSOC);
     }
 
-
-    // ==================================================================
-    // BAGIAN 4 : FUNGSI DATABASE - RESPON EXPERT (COMMENTS)
-    // ==================================================================
-
-    // Mengambil seluruh respon pada satu topik (yang terlama di atas)
     function ambil_balasan($id_post) {
         global $koneksi;
         $stmt = mysqli_prepare($koneksi,
@@ -481,13 +319,6 @@
         return mysqli_stmt_execute($stmt);
     }
 
-
-    // ==================================================================
-    // BAGIAN 5 : HAK AKSES
-    // ==================================================================
-
-    // Membatasi halaman hanya untuk role tertentu.
-    // $base = awalan path menuju root proyek ("" atau "../")
     function wajib_role($role, $base) {
         if (!isset($_SESSION["id_User"]) || ($_SESSION["role"] ?? "") !== $role) {
             header("Location: " . $base . "auth/login.php");

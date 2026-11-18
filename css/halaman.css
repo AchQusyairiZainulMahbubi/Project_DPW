@@ -1,10 +1,3 @@
-/* ==================================================================
-   css/halaman.css
-   Gaya tambahan untuk halaman topik diskusi (client & expert).
-   Dipakai bersama css/style.css
-   ================================================================== */
-
-/* Menu navigasi */
 .navbar {
     display: flex;
     flex-wrap: wrap;
@@ -13,7 +6,6 @@
     border-bottom: 1px solid #ccc;
 }
 
-/* Kartu satu topik diskusi */
 .topik {
     border: 1px solid #ccc;
     border-radius: 6px;
@@ -21,20 +13,17 @@
     margin-bottom: 16px;
 }
 
-/* Kotak satu respon expert di dalam topik */
 .balasan {
     border-left: 3px solid #888;
     padding: 4px 12px;
     margin: 8px 0;
 }
 
-/* Pesan error validasi di bawah input */
 .error {
     display: block;
     color: #c00000;
 }
 
-/* Pesan sukses */
 .pesan {
     padding: 8px 12px;
     margin-bottom: 12px;
@@ -42,7 +31,6 @@
     color: #2e7d32;
 }
 
-/* Susunan form: label di atas, input melebar */
 .form-grup {
     margin-bottom: 14px;
 }

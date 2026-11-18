@@ -1,10 +1,4 @@
 <?php
-    // ==================================================================
-    // expert/semua_topik.php
-    // Expert melihat (browse) seluruh topik yang dibuat client
-    // beserta respon dari expert lain
-    // ==================================================================
-
     session_start();
 
     include "../config/koneksi.php";

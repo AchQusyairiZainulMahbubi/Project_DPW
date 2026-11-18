@@ -1,9 +1,4 @@
 <?php
-    // ==================================================================
-    // client/topik_lain.php
-    // Client melihat (browse) topik diskusi yang dibuat oleh client lain
-    // ==================================================================
-
     session_start();
 
     include "../config/koneksi.php";

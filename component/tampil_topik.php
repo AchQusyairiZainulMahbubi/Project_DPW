@@ -1,11 +1,4 @@
 <?php
-    // ==================================================================
-    // component/tampil_topik.php
-    // Fungsi untuk menampilkan daftar topik beserta respon expert
-    // ==================================================================
-
-    // Menampilkan daftar respon expert pada sebuah topik.
-    // $boleh_edit = true  -> respon milik expert yang sedang login diberi link "Edit Respon"
     function tampil_balasan($balasan, $boleh_edit) {
 
         if (count($balasan) === 0) {
@@ -30,11 +23,6 @@
         }
     }
 
-    // Menampilkan daftar topik.
-    // $aksi menentukan link yang muncul di setiap topik:
-    //   "edit_client"  : link "Edit Topik"   (halaman Topik Saya milik client)
-    //   "balas_expert" : link "Balas Topik"  (halaman milik expert)
-    //   ""             : tidak ada link aksi (hanya melihat)
     function tampil_topik($daftar, $aksi) {
 
         if (count($daftar) === 0) {

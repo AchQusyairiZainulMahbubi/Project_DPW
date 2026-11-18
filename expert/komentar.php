@@ -1,10 +1,4 @@
 <?php
-    // ==================================================================
-    // expert/komentar.php
-    // Expert melihat satu topik dan merespon (reply) topik tersebut
-    // URL: komentar.php?id_post=<id topik>
-    // ==================================================================
-
     session_start();
 
     include "../config/koneksi.php";

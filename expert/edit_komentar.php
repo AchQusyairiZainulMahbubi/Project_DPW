@@ -1,10 +1,4 @@
 <?php
-    // ==================================================================
-    // expert/edit_komentar.php
-    // Expert mengedit respon yang ia tulis sendiri
-    // URL: edit_komentar.php?id_komen=<id respon>
-    // ==================================================================
-
     session_start();
 
     include "../config/koneksi.php";

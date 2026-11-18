@@ -1,12 +1,6 @@
 <?php
-    // ==================================================================
-    // component/navbar.php
-    // Menu navigasi yang menyesuaikan role user (client / expert)
-    // $base = awalan path menuju root proyek ("" atau "../")
-    // ==================================================================
     function tampil_navbar($base) {
 
-        // Jika belum login, menu tidak ditampilkan
         if (!isset($_SESSION["id_User"])) {
             return;
         }
@@ -25,7 +19,7 @@
                 <a href="<?= $base ?>expert/topik_direspon.php">Topik yang Saya Respon</a>
             <?php } ?>
 
-            <a href="<?= $base ?>../Project_DPW/profil.php">Profil</a>
+            <a href="<?= $base ?>component/profil.php">Profil</a>
             <a href="<?= $base ?>auth/logout.php">Logout</a>
         </nav>
         <?php

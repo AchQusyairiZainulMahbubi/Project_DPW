@@ -1,9 +1,4 @@
 <?php
-    // ==================================================================
-    // client/buat_topik.php
-    // Client membuat (compose) topik diskusi baru
-    // ==================================================================
-
     session_start();
 
     include "../config/koneksi.php";

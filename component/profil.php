@@ -1,18 +1,12 @@
 <?php
-    // ==================================================================
-    // profil.php
-    // Halaman edit profil (dipakai oleh client dan expert)
-    // ==================================================================
-
     session_start();
 
-    include "config/koneksi.php";
-    include "fungsi.php";
-    include "component/navbar.php";
+    include __DIR__ . "/../config/koneksi.php";
+    include __DIR__ . "/../fungsi.php";
+    include __DIR__ . "/navbar.php";
 
-    // Hanya user yang sudah login yang boleh membuka halaman ini
     if (!isset($_SESSION["id_User"])) {
-        header("Location: auth/login.php");
+        header("Location: ../auth/login.php");
         exit;
     }
 
@@ -21,7 +15,6 @@
 
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-        // Ambil masukan dari form
         $username = ambil_post("username");
         $email    = ambil_post("email");
         $password = $_POST["password"] ?? "";
@@ -29,28 +22,24 @@
             $password = "";
         }
 
-        // Validasi masukan
         $error = validasi_profil($error, $username, $email, $password);
 
-        // Username tidak boleh sama dengan milik user lain
         if (!isset($error["username"]) && username_dipakai($username, $id_User)) {
             $error["username"] = "Username sudah dipakai user lain";
         }
 
-        // Jika tidak ada error, simpan perubahan lalu kembali ke homepage
         if (empty($error)) {
             update_profil($id_User, $username, $email, $password);
             $_SESSION["username"] = $username;
-            header("Location: index.php");
+            header("Location: ../index.php");
             exit;
         }
     } else {
 
-        // Pertama kali dibuka: tampilkan data profil saat ini
         $data = select_id($id_User);
 
         if (!$data) {
-            header("Location: index.php");
+            header("Location: ../index.php");
             exit;
         }
 
@@ -65,8 +54,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profil</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/halaman.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/halaman.css">
 </head>
 <body>
 
