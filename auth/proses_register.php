@@ -3,8 +3,8 @@
 
     session_start();
 
-    include "koneksi.php";
-    include "fungsi.php";
+    include __DIR__ . "/../config/koneksi.php";
+    include __DIR__ . "/../fungsi.php";   
 
     // Mengambil data dari form
     $username = trim($_POST["username"] ?? "");
@@ -72,7 +72,7 @@
 
     // Menyimpan data ke database
     $query = mysqli_prepare($koneksi,
-        "INSERT INTO `user` (username, email, passwors, role)
+        "INSERT INTO `user` (username, email, password, role)
         VALUES (?, ?, ?, ?)");
 
     if (!$query) {

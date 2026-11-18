@@ -3,10 +3,10 @@
 session_start();
 
 $error = $_SESSION["error"] ?? "";
-$username = $_SESSION["username"] ?? "";
+$username = $_SESSION["login_username"] ?? "";
 
 unset($_SESSION["error"]);
-unset($_SESSION["username"]);
+unset($_SESSION["login_username"]);
 ?>
 
 <!DOCTYPE html>
@@ -15,7 +15,7 @@ unset($_SESSION["username"]);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
 
@@ -45,7 +45,7 @@ unset($_SESSION["username"]);
 
         <p>Belum punya akun? <a href="register.php">Register</a></p>
 
-        <a href="index.php">Kembali ke Homepage</a>
+        <a href="../index.php">Kembali ke Homepage</a>
     </main>
 
 </body>

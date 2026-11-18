@@ -1,7 +1,11 @@
 <?php
+    // ==================================================================
+    // index.php
+    // Homepage forum diskusi
+    // ==================================================================
 
     session_start();
-
+    include "component/navbar.php";
 ?>
 
 <!DOCTYPE html>
@@ -11,6 +15,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Forum Diskusi</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/halaman.css">
 </head>
 <body>
 
@@ -20,30 +25,30 @@
         <p>Tempat berbagi informasi dan pengetahuan.</p>
     </header>
 
+    <?php tampil_navbar(""); ?>
+
     <main>
 
-        <?php if (isset($_SESSION['username'])) { ?>
+        <?php if (isset($_SESSION["username"])) { ?>
 
-            <h3>Halo, <?php echo $_SESSION['username']; ?></h3>
+            <h3>Halo, <?= htmlspecialchars($_SESSION["username"]) ?></h3>
 
-            <p>Role: <?php echo $_SESSION['role']; ?></p>
+            <p>Role: <?= htmlspecialchars($_SESSION["role"]) ?></p>
 
-            <?php if ($_SESSION['role'] == 'client') { ?>
+            <?php if ($_SESSION["role"] === "client") { ?>
 
-                <p>Anda login sebagai Client.</p>
+                <p>Anda login sebagai Client. Anda dapat membuat topik diskusi, mengedit topik Anda, dan melihat topik client lain.</p>
 
-            <?php } else if ($_SESSION['role'] == 'expert') { ?>
+            <?php } else if ($_SESSION["role"] === "expert") { ?>
 
-                <p>Anda login sebagai Expert.</p>
+                <p>Anda login sebagai Expert. Anda dapat merespon topik client, mengedit respon Anda, dan melihat seluruh topik diskusi.</p>
 
             <?php } ?>
 
-            <a href="logout.php">Logout</a>
-
         <?php } else { ?>
 
-            <a href="login.php">Login</a>
-            <a href="register.php">Register</a>
+            <a href="auth/login.php">Login</a>
+            <a href="auth/register.php">Register</a>
 
         <?php } ?>
 
