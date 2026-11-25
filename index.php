@@ -19,17 +19,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Forum Diskusi</title>
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/halaman.css">
 </head>
 <body>
 
     <!-- Bagian judul halaman -->
     <header>
+        <?php if (!$sudah_login) { ?>
+            <div class="card">
+                <a href="auth/login.php">Login</a>
+                <a href="auth/register.php">Register</a>
+            </div>
+        <?php } ?>
         <h1>FORUM DISKUSI</h1>
         <h2>Selamat Datang di Forum Diskusi</h2>
         <p>Tempat berbagi informasi dan pengetahuan.</p>
     </header>
-
+    
     <!-- Menu navigasi (hanya tampil jika sudah login) -->
     <?php tampil_navbar(""); ?>
 
@@ -53,11 +58,6 @@
             <?php } ?>
 
         <?php } else { ?>
-
-            <p>
-                <a href="auth/login.php">Login</a>
-                <a href="auth/register.php">Register</a>
-            </p>
             <p><em>Login untuk melihat komentar pada setiap topik.</em></p>
 
         <?php } ?>
