@@ -76,7 +76,14 @@
                 <?php
                     // Tujuan link: halaman detail jika sudah login, halaman login jika belum
                     if ($sudah_login) {
-                        $link = "component/detail_topik.php?id_post=" . (int)$t["id_post"];
+                        $role = $_SESSION["role"] ?? "";
+                        if ($role === "expert") {
+                            $link = "expert/komentar.php?id_post=" . (int)$t["id_post"];
+                        } else if ((int)$t["id_User"] === (int)$_SESSION["id_User"]) {
+                            $link = "client/topik_saya.php";
+                        } else {
+                            $link = "client/topik_lain.php";
+                        }
                     } else {
                         $link = "auth/login.php";
                     }
