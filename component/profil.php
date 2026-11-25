@@ -12,6 +12,8 @@
 
     $error = [];
     $id_User = (int)$_SESSION["id_User"];
+    $mode_edit = (($_GET["mode"] ?? "") === "edit") || ($_SERVER["REQUEST_METHOD"] === "POST");
+    $pesan     = (($_GET["pesan"] ?? "") === "diubah") ? "Profil berhasil diperbarui." : "";
 
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
@@ -31,7 +33,7 @@
         if (empty($error)) {
             update_profil($id_User, $username, $email, $password);
             $_SESSION["username"] = $username;
-            header("Location: ../index.php");
+            header("Location: profil.php?pesan=diubah");
             exit;
         }
     } else {
@@ -45,6 +47,7 @@
 
         $username = $data["username"];
         $email    = $data["email"];
+        $role     = $data["role"];
     }
 ?>
 
@@ -53,49 +56,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Profil</title>
+    <title><?= $mode_edit ? "Edit Profil" : "Profil Akun" ?></title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
 
     <header>
-        <h1>Edit Profil</h1>
+        <h1><?= $mode_edit ? "Edit Profil" : "Profil Akun" ?></h1>
     </header>
 
-    <?php tampil_navbar(""); ?>
+    <?php if (!$mode_edit) { ?>
+        <?php tampil_navbar("../"); ?>
+    <?php } ?>
 
-    <main>
+        <main>
 
-        <form action="" method="post">
+        <?php if ($pesan !== "") { ?>
+            <div class="pesan"><?= $pesan ?></div>
+        <?php } ?>
 
-            <div class="form-grup">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username"
-                       value="<?= htmlspecialchars($username) ?>">
-                <?php if (isset($error["username"])) { ?>
-                    <small class="error"><?= $error["username"] ?></small>
-                <?php } ?>
-            </div>
+        <?php if (!$mode_edit) { ?>
 
-            <div class="form-grup">
-                <label for="email">Email</label>
-                <input type="text" id="email" name="email"
-                       value="<?= htmlspecialchars($email) ?>">
-                <?php if (isset($error["email"])) { ?>
-                    <small class="error"><?= $error["email"] ?></small>
-                <?php } ?>
-            </div>
+            <article class="topik">
+                <h3>Informasi Akun</h3>
+                <p><strong>Username:</strong> <?= htmlspecialchars($username) ?></p>
+                <p><strong>Email:</strong> <?= htmlspecialchars($email) ?></p>
+                <p><strong>Role:</strong> <?= htmlspecialchars($role) ?></p>
 
-            <div class="form-grup">
-                <label for="password">Password baru (kosongkan jika tidak diganti)</label>
-                <input type="password" id="password" name="password">
-                <?php if (isset($error["password"])) { ?>
-                    <small class="error"><?= $error["password"] ?></small>
-                <?php } ?>
-            </div>
+                <a href="profil.php?mode=edit"><button type="button">Edit Profil</button></a>
+            </article>
 
-            <button type="submit">Simpan Profil</button>
-        </form>
+        <?php } else { ?>
+
+            <form action="profil.php?mode=edit" method="post">
+
+                <div class="form-grup">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username"
+                           value="<?= htmlspecialchars($username) ?>">
+                    <?php if (isset($error["username"])) { ?>
+                        <small class="error"><?= $error["username"] ?></small>
+                    <?php } ?>
+                </div>
+
+                <div class="form-grup">
+                    <label for="email">Email</label>
+                    <input type="text" id="email" name="email"
+                           value="<?= htmlspecialchars($email) ?>">
+                    <?php if (isset($error["email"])) { ?>
+                        <small class="error"><?= $error["email"] ?></small>
+                    <?php } ?>
+                </div>
+
+                <div class="form-grup">
+                    <label for="password">Password baru (kosongkan jika tidak diganti)</label>
+                    <input type="password" id="password" name="password">
+                    <?php if (isset($error["password"])) { ?>
+                        <small class="error"><?= $error["password"] ?></small>
+                    <?php } ?>
+                </div>
+
+                <button type="submit">Simpan Profil</button>
+                <a href="profil.php">Batal</a>
+            </form>
+
+        <?php } ?>
+
     </main>
 
 </body>
